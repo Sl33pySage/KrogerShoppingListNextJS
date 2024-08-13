@@ -23,7 +23,6 @@ export default async function ProductListHandler(product: any) {
 
  
   const data = await res.json()
-  // console.log(data.data)
   return await data.data
 
 }
