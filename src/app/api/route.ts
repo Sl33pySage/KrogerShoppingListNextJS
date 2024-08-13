@@ -7,7 +7,7 @@ import { NextResponse } from "next/server";
 export default async function ProductListHandler(product: any) {
   const dataFromTokenHandler = await TokenHandler()
 
-const locationId = process.env.REACT_kroger_store_locationId
+  const locationId = process.env.REACT_kroger_store_locationId
   
 
   const productUrl =`https://api-ce.kroger.com/v1/products`
