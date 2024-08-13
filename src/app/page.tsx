@@ -1,7 +1,7 @@
 "use client";
-import Image from "next/image";
-import { auth, handlers } from "./auth";
-import ProductListHandler from "./api/route";
+// import Image from "next/image";
+// import { auth, handlers } from "./auth";
+// import ProductListHandler from "./api/route";
 // import RefreshHandler from "./api/token/refresh/route";
 // import TokenHandler from "./api/token/route";
 import { useState } from "react";
@@ -18,22 +18,36 @@ export default function Home() {
   async function addItemToList(userItem: any) {
     if (userItem === "") return;
 
-    // Fetch item Data
-    const itemData = await ProductListHandler(userItem);
+    // Fetch item data from the API route
+    try {
+      const res = await fetch(
+        `/api/products?product=${encodeURIComponent(userItem)}`
+      );
+      if (!res.ok) {
+        console.error("Failed to fetch product data");
+        return;
+      }
+      const itemData = await res.json();
 
-    // Update groceryItems
-    setGroceryItems([...groceryItems, userItem]);
-
-    // Update shopCart with the item's price data
-    setShopCart((prevCart) => ({
-      ...prevCart,
-      [userItem]: itemData?.[0]?.items?.[0]?.price?.regular || "N/A",
-    }));
-
-    // Clear the input field
-    setNewGroceryItem("");
-
-    console.log("groceryItemsState", groceryItems, newGroceryItem);
+      // Extract price
+      const price = itemData?.[0]?.items?.[0]?.price?.regular;
+      if (!price) {
+        console.error("Price not found for the product");
+        return;
+      }
+      // Update state
+      setGroceryItems([...groceryItems, userItem]);
+      // Update shopCart with the item's price data
+      setShopCart((prevCart) => ({
+        ...prevCart,
+        [userItem]: price,
+      }));
+      // Clear input
+      setNewGroceryItem("");
+    } catch (error) {
+      console.error("Error fetching product data:", error);
+    }
+    // console.log("groceryItemsState", groceryItems, newGroceryItem);
   }
 
   function price(item: string) {
@@ -41,16 +55,14 @@ export default function Home() {
   }
 
   function total() {
-    let subtotal = 0;
-    const tax = 1.0825;
-    let total = 0;
-    for (const property in shopCart) {
-      subtotal += shopCart[property];
-    }
-    total = subtotal * tax;
-    return `Total: $${total.toFixed(2)}`;
+    const taxRate = 0.0825;
+    const subtotal = Object.values(shopCart).reduce(
+      (acc, curr) => acc + curr,
+      0
+    );
+    const totalAmount = subtotal * (1 + taxRate);
+    return `Total: $${totalAmount.toFixed(2)}`;
   }
-  //  total()
 
   return (
     <main
