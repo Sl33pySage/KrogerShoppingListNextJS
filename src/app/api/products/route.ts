@@ -27,7 +27,7 @@ export async function GET(request: NextRequest) {
         },
       }
     );
-    console.log(res);
+    // console.log("RESDATA:", res);
     if (!res.ok) {
       return NextResponse.json(
         { error: "Failed to fetch product data" },
@@ -35,7 +35,7 @@ export async function GET(request: NextRequest) {
       );
     }
     const data = await res.json();
-    console.log("FetchedData:", data);
+    // console.log("FetchedData:", data);
     return NextResponse.json(data.data);
   } catch (error) {
     console.error("Error fetching product data:", error);

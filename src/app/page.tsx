@@ -27,6 +27,7 @@ export default function Home() {
         return;
       }
       const itemData = await res.json();
+      // console.log("ItemData", itemData);
       // Extract price
       const price = itemData?.[0]?.items?.[0]?.price?.regular;
       if (!price) {
@@ -45,7 +46,7 @@ export default function Home() {
     } catch (error) {
       console.error("Error fetching product data:", error);
     }
-    console.log("groceryItemsState", groceryItems, newGroceryItem);
+    // console.log("groceryItemsState", groceryItems, newGroceryItem);
   }
 
   function price(item: string) {
