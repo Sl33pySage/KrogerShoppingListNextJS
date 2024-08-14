@@ -27,11 +27,12 @@ export default function Home() {
         return;
       }
       const itemData = await res.json();
-      // console.log("ItemData", itemData);
+      console.log("ItemData", itemData);
       // Extract price
-      const price = itemData?.[0]?.items?.[0]?.price?.regular;
+      let price = itemData?.[0]?.items?.[0]?.price?.regular;
       if (!price) {
         console.error("Price not found for the product");
+        price = 0;
         // return;
       }
       // Update state
@@ -47,6 +48,7 @@ export default function Home() {
       console.error("Error fetching product data:", error);
     }
     // console.log("groceryItemsState", groceryItems, newGroceryItem);
+    // console.log("shopCart", shopCart);
   }
 
   function price(item: string) {
@@ -54,11 +56,21 @@ export default function Home() {
   }
 
   function total() {
+    // console.log(shopCart);
     const taxRate = 0.0825;
-    const subtotal = Object.values(shopCart).reduce(
-      (acc, curr) => acc + curr,
-      0
-    );
+    const subtotal = Object.values(shopCart).reduce((acc, curr) => {
+      // if (Number.isNaN(curr) == false) {
+      //   acc + curr;
+      // } else {
+      //   Object.values(shopCart).pop();
+      //   // return;
+      // }
+      console.log(acc);
+      console.log(curr);
+      console.log(Object.values(shopCart));
+      return acc + curr;
+    }, 0);
+    console.log(subtotal);
     const totalAmount = subtotal * (1 + taxRate);
     return `Total: $${totalAmount.toFixed(2)}`;
   }
