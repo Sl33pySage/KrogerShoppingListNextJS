@@ -27,7 +27,7 @@ export async function GET(request: NextRequest) {
         },
       }
     );
-    console.log("API RESPONSE STATUS:", res.status);
+    console.log(res);
     if (!res.ok) {
       return NextResponse.json(
         { error: "Failed to fetch product data" },

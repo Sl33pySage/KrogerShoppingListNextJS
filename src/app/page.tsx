@@ -22,18 +22,16 @@ export default function Home() {
       const res = await fetch(
         `/api/products?product=${encodeURIComponent(userItem)}`
       );
-      console.log("additemtolistres:", res);
       if (!res.ok) {
         console.error("Failed to fetch product data");
         return;
       }
       const itemData = await res.json();
-
       // Extract price
       const price = itemData?.[0]?.items?.[0]?.price?.regular;
       if (!price) {
         console.error("Price not found for the product");
-        return;
+        // return;
       }
       // Update state
       setGroceryItems([...groceryItems, userItem]);

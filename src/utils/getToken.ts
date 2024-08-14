@@ -1,5 +1,5 @@
 // import { METHODS } from "http";
-// import fetch from "node-fetch";
+import fetch from "node-fetch";
 
 export async function getToken() {
   const tokenUrl = "https://api-ce.kroger.com/v1/connect/oauth2/token";
@@ -20,5 +20,5 @@ export async function getToken() {
     throw new Error("Failed to fetch token");
   }
   const data = await res.json();
-  return data;
+  return <any>data;
 }
