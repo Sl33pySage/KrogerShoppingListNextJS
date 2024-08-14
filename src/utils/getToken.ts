@@ -14,7 +14,7 @@ export async function getToken() {
         `${clientId}:${clientSecret}`
       ).toString("base64")}`,
     },
-    body: "grant_type=client_creentials&scope=product.compact",
+    body: "grant_type=client_credentials&scope=product.compact",
   });
   if (!res.ok) {
     throw new Error("Failed to fetch token");

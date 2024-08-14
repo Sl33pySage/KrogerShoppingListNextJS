@@ -15,6 +15,7 @@ export async function GET(request: NextRequest) {
 
     const dataFromTokenHandler = await getToken();
     const locationId = process.env.REACT_kroger_store_locationId;
+
     const productUrl = "https://api-ce.kroger.com/v1/products";
     const res = await fetch(
       `${productUrl}?filter.locationId=${locationId}&filter.term=${product}&filter.brand=Kroger`,
@@ -22,10 +23,11 @@ export async function GET(request: NextRequest) {
         method: "GET",
         headers: {
           Accept: "application/json",
-          Authorization: `Bearer ${dataFromTokenHandler.access_token}`,
+          Authorization: `Bearer ${await dataFromTokenHandler.access_token}`,
         },
       }
     );
+    console.log("API RESPONSE STATUS:", res.status);
     if (!res.ok) {
       return NextResponse.json(
         { error: "Failed to fetch product data" },
@@ -33,6 +35,7 @@ export async function GET(request: NextRequest) {
       );
     }
     const data = await res.json();
+    console.log("FetchedData:", data);
     return NextResponse.json(data.data);
   } catch (error) {
     console.error("Error fetching product data:", error);

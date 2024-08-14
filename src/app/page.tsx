@@ -17,12 +17,12 @@ export default function Home() {
 
   async function addItemToList(userItem: any) {
     if (userItem === "") return;
-
     // Fetch item data from the API route
     try {
       const res = await fetch(
         `/api/products?product=${encodeURIComponent(userItem)}`
       );
+      console.log("additemtolistres:", res);
       if (!res.ok) {
         console.error("Failed to fetch product data");
         return;
@@ -47,7 +47,7 @@ export default function Home() {
     } catch (error) {
       console.error("Error fetching product data:", error);
     }
-    // console.log("groceryItemsState", groceryItems, newGroceryItem);
+    console.log("groceryItemsState", groceryItems, newGroceryItem);
   }
 
   function price(item: string) {
